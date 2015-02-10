@@ -7,10 +7,34 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
+    if params[:ratings]
+      @selected = params[:ratings].keys
+      session[:selected] = @selected
+      @movies = []
+      @selected.each { |s| 
+        Movie.where(rating: s).each { |z| 
+          @movies.push z
+        }
+      }
+      @movies = @movies
+      @ratings = @selected
+    elsif session[:selected] != nil
+      @movies = []
+      session[:selected].each { |s| 
+        Movie.where(rating: s).each { |z| 
+          @movies.push z
+        }
+      }
+      @movies = @movies
+      @ratings = session[:selected]
+    else
+      @movies = Movie.all
+      @ratings = ["G", "R", "PG-13", "PG"]
+    end
+
+    @all_ratings = Movie.all.map {|movie| movie.rating}.uniq
     if params[:title]
       @movies = @movies.sort_by {|movie| movie.title}
-      
     end
     if params[:release]
       @movies = @movies.sort_by {|movie| movie.release_date}
