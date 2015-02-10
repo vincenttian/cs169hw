@@ -7,7 +7,8 @@ class MoviesController < ApplicationController
   end
 
   def index
-    if params[:ratings]
+    # rating logic
+    if params[:ratings] # clicked on params
       @selected = params[:ratings].keys
       session[:selected] = @selected
       @movies = []
@@ -18,7 +19,7 @@ class MoviesController < ApplicationController
       }
       @movies = @movies
       @ratings = @selected
-    elsif session[:selected] != nil
+    elsif session[:selected] != nil # clicked on sort
       @movies = []
       session[:selected].each { |s| 
         Movie.where(rating: s).each { |z| 
@@ -27,23 +28,41 @@ class MoviesController < ApplicationController
       }
       @movies = @movies
       @ratings = session[:selected]
-      @rating_hash = {}
-      @ratings.each { |r|
-        @rating_hash[r] = 1
-      }
-      redirect_to movies_path(:ratings => @rating_hash)
-    else
+    else # first time logging in
       @movies = Movie.all
       @ratings = ["G", "R", "PG-13", "PG"]
     end
 
+    # sorting logic
+    @session = nil
     @all_ratings = Movie.all.map {|movie| movie.rating}.uniq
     if params[:title]
       @movies = @movies.sort_by {|movie| movie.title}
-    end
-    if params[:release]
+      session[:sort] = "title"
+      @session = :title
+    elsif params[:release]
       @movies = @movies.sort_by {|movie| movie.release_date}
+      session[:sort] = "release"
+      @session = :release
+    elsif session[:sort]
+      if session[:sort] == "title"
+        @movies = @movies.sort_by {|movie| movie.title}
+      elsif session[:sort] == "release"
+        @movies = @movies.sort_by {|movie| movie.release_date}
+      else
+      end
+    else
+      session[:sort] = "none"
+      @session = :none
+      #redirect 
+      @rating_hash = {}
+      @ratings.each { |r|
+        @rating_hash[r] = 1
+      }
+      1/0
+      redirect_to movies_path(:ratings => @rating_hash, @session => 'sorted')
     end
+
   end
 
   def new
