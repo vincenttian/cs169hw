@@ -17,6 +17,7 @@ group :assets do
   gem 'uglifier'
 end
 
+gem 'turbolinks'
 gem 'jquery-rails'
 gem 'haml'
 gem 'better_errors'
