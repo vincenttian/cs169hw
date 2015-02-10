@@ -57,7 +57,7 @@ class MoviesController < ApplicationController
       end
       session[:sort] = "none"
       @session = :none
-      redirect = true
+      @redirect = true
     else
     end
 
