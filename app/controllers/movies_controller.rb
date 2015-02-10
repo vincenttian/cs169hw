@@ -51,14 +51,18 @@ class MoviesController < ApplicationController
     elsif session[:sort]
       if session[:sort] == "title"
         @movies = @movies.sort_by {|movie| movie.title}
+        @redirect = true
+        @session = :title
       elsif session[:sort] == "release"
         @movies = @movies.sort_by {|movie| movie.release_date}
+        @redirect = true
+        @session = :release
       else
+        session[:sort] = "none"
+        @session = :none
       end
-      session[:sort] = "none"
+    else # first time login
       @session = :none
-      @redirect = true
-    else
     end
 
     if @redirect
