@@ -1,6 +1,6 @@
 -#  This file is app/views/movies/index.html.haml
 
-= form_tag movies_path, :method => :get, :id => "ratings_form" do
+= form_tag movies_path(:foo => 'bar'), :method => :get, :id => "ratings_form" do
   Include: 
   - @all_ratings.each do |rating|
     = rating

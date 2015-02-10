@@ -27,6 +27,11 @@ class MoviesController < ApplicationController
       }
       @movies = @movies
       @ratings = session[:selected]
+      @rating_hash = {}
+      @ratings.each { |r|
+        @rating_hash[r] = 1
+      }
+      redirect_to movies_path(:ratings => @rating_hash)
     else
       @movies = Movie.all
       @ratings = ["G", "R", "PG-13", "PG"]
