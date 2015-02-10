@@ -7,6 +7,9 @@ class MoviesController < ApplicationController
   end
 
   def index
+
+    @redirect = false
+
     # rating logic
     if params[:ratings] # clicked on params
       @selected = params[:ratings].keys
@@ -28,6 +31,7 @@ class MoviesController < ApplicationController
       }
       @movies = @movies
       @ratings = session[:selected]
+      @redirect = true
     else # first time logging in
       @movies = Movie.all
       @ratings = ["G", "R", "PG-13", "PG"]
@@ -51,15 +55,18 @@ class MoviesController < ApplicationController
         @movies = @movies.sort_by {|movie| movie.release_date}
       else
       end
-    else
       session[:sort] = "none"
       @session = :none
+      redirect = true
+    else
+    end
+
+    if @redirect
       #redirect 
       @rating_hash = {}
       @ratings.each { |r|
         @rating_hash[r] = 1
       }
-      1/0
       redirect_to movies_path(:ratings => @rating_hash, @session => 'sorted')
     end
 
