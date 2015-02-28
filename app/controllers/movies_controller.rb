@@ -7,9 +7,7 @@ class MoviesController < ApplicationController
   end
 
   def index
-
     @redirect = false
-
     # rating logic
     if params[:ratings] # clicked on params
       @selected = params[:ratings].keys
@@ -106,7 +104,7 @@ class MoviesController < ApplicationController
 
   private
     def movie_params
-      params.require(:movie).permit(:title, :rating, :description, :release_date)
+      params.require(:movie).permit(:title, :rating, :description, :release_date, :director)
     end
 
 end

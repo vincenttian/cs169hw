@@ -7,6 +7,8 @@
     = check_box_tag "ratings[#{rating}]", 1, !!(@ratings.include? rating), :id => "ratings_#{rating}"
   = submit_tag 'Refresh', :id => "ratings_submit"
 
+= form_tag 
+
 %h1 All Movies
 
 %table#movies
@@ -15,6 +17,7 @@
       - if params[:release]
         %th= link_to "Movie Title", movies_path(:title => 'sorted'), :id => "title_header"
         %th Rating
+        %th Director
         %th{:class => 'hilite'} 
           =link_to "Release Date", movies_path(:release => 'sorted'), :id => "release_date_header"
         %th More Info  
@@ -22,11 +25,13 @@
         %th{:class => 'hilite'} 
           = link_to "Movie Title", movies_path(:title => 'sorted'), :id => "title_header"
         %th Rating
+        %th Director
         %th= link_to "Release Date", movies_path(:release => 'sorted'), :id => "release_date_header"
         %th More Info  
       - else
         %th= link_to "Movie Title", movies_path(:title => 'sorted'), :id => "title_header"
         %th Rating
+        %th Director
         %th= link_to "Release Date", movies_path(:release => 'sorted'), :id => "release_date_header"
         %th More Info
   %tbody
@@ -34,6 +39,7 @@
       %tr
         %td= movie.title 
         %td= movie.rating
+        %td= movie.director
         %td= movie.release_date
         %td= link_to "More about #{movie.title}", movie_path(movie)
 
