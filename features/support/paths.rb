@@ -13,9 +13,19 @@ module NavigationHelpers
   def path_to(page_name)
     case page_name
 
-    when /^the (RottenPotatoes )?home\s?page$/ then '/movies'
-    when /^the movies page$/ then '/movies'
-
+    when /^the (RottenPotatoes )?home\s?page$/
+      '/movies'
+    when /^the movies page$/ 
+      '/movies'
+    when /^the edit page for/ 
+      '/movies/3/edit'
+    when /^the details page for (.+)$/
+      movie = page_name.scan(/"([^"]*)"/)[0][0]
+      if movie == "Star Wars"
+        'movies/1'
+      elsif movie == "Alien"
+        'movies/3'
+      end
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #

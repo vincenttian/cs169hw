@@ -6,6 +6,20 @@ class MoviesController < ApplicationController
     # will render app/views/movies/show.<extension> by default
   end
 
+  def same_director
+    @movie = Movie.find(params[:id])
+    @same_movies = Movie.where(director: @movie.director).to_a
+    @same_movies.each { |m|
+      if m.id == @movie.id
+        @same_movies.delete(m)
+      end
+    }
+    if @same_movies.length == 0
+      flash[:notice] = "#{@movie.title} has no director info"     
+      redirect_to movies_path
+    end
+  end
+
   def index
     @redirect = false
     # rating logic

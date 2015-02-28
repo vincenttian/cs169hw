@@ -4,7 +4,7 @@ Given /the following movies exist/ do |movies_table|
   movies_table.hashes.each do |movie|
     # each returned element will be a hash whose key is the table header.
     # you should arrange to add that movie to the database here.
-    Movie.create(title: movie['title'], rating: movie['rating'], release_date: movie['release_date'])
+    Movie.create(title: movie['title'], rating: movie['rating'], release_date: movie['release_date'], director: movie['director'])
   end
 end
 
@@ -56,3 +56,19 @@ Then /I should see all the movies/ do
     assert page.body.index(m.title) > 0
   }
 end
+
+Then(/^the director of "(.*?)" should be "(.*?)"$/) do |arg1, arg2|
+  puts page.body.index(arg2) > 0 
+end
+
+Then /I should be on the Similar Movies page for (.*)/ do |movie|
+  puts page.body.index("Same director movies as #{movie[1..-2]}") > 0
+end
+
+
+
+
+
+
+
+
